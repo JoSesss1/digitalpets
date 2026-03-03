@@ -90,6 +90,26 @@ async function crearTablas() {
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+// ==========================
+// REGISTRO
+// ==========================
+
+app.post("/registro", async (req, res) => {
+    const { nombre, correo, telefono, direccion, password } = req.body;
+
+    try {
+        await pool.query(
+            "INSERT INTO usuarios (nombre, correo, telefono, direccion, password) VALUES ($1,$2,$3,$4,$5)",
+            [nombre, correo, telefono, direccion, password]
+        );
+
+        res.redirect("/login.html");
+
+    } catch (error) {
+        console.error("Error en registro:", error);
+        res.status(500).send("Error al registrar usuario");
+    }
+});
 
 // ==========================
 // LOGIN
