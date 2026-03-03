@@ -153,7 +153,7 @@ app.listen(PORT, () => {
 app.get("/hacer-admin", async (req, res) => {
   await pool.query(
     "UPDATE usuarios SET rol='admin' WHERE correo=$1",
-    ["'admin@digitalpets.com"]
+    [""]
   );
 
   res.send("Usuario convertido en admin");
