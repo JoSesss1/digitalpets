@@ -38,6 +38,51 @@ const pool = new Pool({
     }
 });
 
+async function crearTablas() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS usuarios (
+        id SERIAL PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        correo VARCHAR(150) UNIQUE NOT NULL,
+        telefono VARCHAR(20),
+        direccion TEXT,
+        password VARCHAR(255) NOT NULL,
+        rol VARCHAR(20) DEFAULT 'cliente',
+        creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS mascotas (
+        id SERIAL PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        especie VARCHAR(50) NOT NULL,
+        raza VARCHAR(100),
+        edad INT,
+        peso DECIMAL(5,2),
+        usuario_id INT REFERENCES usuarios(id) ON DELETE CASCADE,
+        creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS citas (
+        id SERIAL PRIMARY KEY,
+        mascota_id INT REFERENCES mascotas(id) ON DELETE CASCADE,
+        fecha DATE NOT NULL,
+        hora TIME NOT NULL,
+        motivo TEXT NOT NULL,
+        estado VARCHAR(30) DEFAULT 'pendiente',
+        creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    console.log("Tablas verificadas correctamente ✅");
+  } catch (error) {
+    console.error("Error creando tablas:", error);
+  }
+}
 // ==========================
 // RUTA DE PRUEBA
 // ==========================
@@ -105,3 +150,12 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log("Servidor corriendo en puerto", PORT);
 });
+app.get("/hacer-admin", async (req, res) => {
+  await pool.query(
+    "UPDATE usuarios SET rol='admin' WHERE correo=$1",
+    ["'admin@digitalpets.com"]
+  );
+
+  res.send("Usuario convertido en admin");
+});
+crearTablas();
