@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Mis Citas - DigitalPets</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="logoDigitalPets.png" class="logo">
+        <h1>DigitalPets 🐾</h1>
+    </div>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="perfil.html">Perfil</a>
+        <a href="#" id="logoutBtn">Cerrar sesión</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Crear Nueva Cita</h3>
+        <form action="/crear-cita" method="POST">
+            <select name="mascota_id" id="selectMascota" required></select>
+            <input type="date" name="fecha" required>
+            <input type="time" name="hora" required>
+            <textarea name="motivo" placeholder="Motivo de la cita" required></textarea>
+            <button class="primary">Agendar Cita</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Historial de Citas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mascota</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="tablaCitas"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 DigitalPets
+</footer>
+<script src="app.js"></script>
+<script>
+async function cargarMascotas() {
+    const res = await fetch("/mis-mascotas");
+    const mascotas = await res.json();
+
+    const select = document.getElementById("selectMascota");
+    mascotas.forEach(m => {
+        select.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
+    });
+}
+
+async function cargarCitas() {
+    const res = await fetch("/mis-citas");
+    const citas = await res.json();
+
+    const tabla = document.getElementById("tablaCitas");
+    tabla.innerHTML = "";
+
+    citas.forEach(c => {
+        tabla.innerHTML += `
+        <tr>
+            <td>${c.id}</td>
+            <td>${c.mascota}</td>
+            <td>${c.fecha}</td>
+            <td>${c.hora}</td>
+            <td>${c.motivo}</td>
+            <td>${c.estado}</td>
+        </tr>`;
+    });
+}
+
+cargarMascotas();
+cargarCitas();
+</script>
+
+<script>
+fetch("/api/auth/verificar")
+.then(res => res.json())
+.then(data => {
+    if (!data.autenticado) {
+        window.location.href = "/iniciosesion.html";
+    }
+});
+</script>
+
+</body>
+</html>

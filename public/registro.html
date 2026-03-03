@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Registro - DigitalPets</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="logoDigitalPets.png" class="logo">
+        <h1>DigitalPets 🐾</h1>
+    </div>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="iniciosesion.html">Iniciar Sesión</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Crear Cuenta</h2>
+        <form action="/registro" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="email" name="correo" placeholder="Correo electrónico" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+            <input type="text" name="direccion" placeholder="Dirección" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button class="primary">Registrarse</button>
+        </form>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 DigitalPets
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

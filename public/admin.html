@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Administrador - DigitalPets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="logoDigitalPets.png" class="logo">
+        <h1>DigitalPets 🐾</h1>
+    </div>
+    <nav>
+        <a href="iniciosesion.html">Inicio</a>
+        <a href="#" id="logoutBtn">Cerrar sesión</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Panel de Administración</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mascota</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="tablaAdmin"></tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+fetch("/api/admin/verificar")
+.then(res => res.json())
+.then(data => {
+    if (!data.autorizado) {
+        window.location.href = "/iniciosesion.html";
+    }
+});
+</script>
+
+</body>
+</html>

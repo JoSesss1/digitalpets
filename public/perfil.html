@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Mi Perfil - DigitalPets</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="logoDigitalPets.png" class="logo">
+        <h1>DigitalPets 🐾</h1>
+    </div>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="citas.html">Citas</a>
+        <a href="#" id="logoutBtn">Cerrar sesión</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Registrar Nueva Mascota</h3>
+        <form action="/crear-mascota" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="especie" placeholder="Especie" required>
+            <input type="text" name="raza" placeholder="Raza" required>
+            <input type="number" name="edad" placeholder="Edad" required>
+            <button class="primary">Guardar Mascota</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Mis Mascotas</h3>
+        <ul id="listaMascotas"></ul>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 DigitalPets
+</footer>
+<script src="app.js"></script>
+<script>
+async function cargarMascotas() {
+    const res = await fetch("/mis-mascotas");
+    const mascotas = await res.json();
+
+    const lista = document.getElementById("listaMascotas");
+    lista.innerHTML = "";
+
+    mascotas.forEach(m => {
+        lista.innerHTML += `<li>${m.nombre} - ${m.especie} - ${m.raza} - ${m.edad} años</li>`;
+    });
+}
+
+cargarMascotas();
+</script>
+
+</body>
+</html>

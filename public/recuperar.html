@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Cuenta - DigitalPets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <img src="logoDigitalPets.png" class="logo">
+        <h1>DigitalPets 🐾</h1>
+    </div>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="iniciosesion.html">Iniciar Sesión</a>
+    </nav>
+</header>
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+        <h2>Recuperar contraseña</h2>
+        <p>Ingresa tu correo electrónico y te enviaremos instrucciones.</p>
+
+        <form id="recuperarForm">
+            <input type="email" name="correo" placeholder="Correo Electrónico" required>
+            <button type="submit" class="primary">Enviar enlace</button>
+        </form>
+
+        <div class="auth-footer">
+            <a href="/iniciosesion.html">Volver</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const recuperarForm = document.getElementById("recuperarForm");
+
+recuperarForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const correo = recuperarForm.correo.value;
+
+    const response = await fetch("/api/auth/recuperar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        alert("Si el correo existe, se enviaron instrucciones.");
+    } else {
+        alert("Error al procesar solicitud.");
+    }
+});
+</script>
+
+</body>
+</html>
